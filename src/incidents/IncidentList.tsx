@@ -2,10 +2,6 @@ import { Separator } from "@/components/ui/separator"
 import { Incident } from "@/types"
 import { FC } from "react"
 
-
-// Google maps API key
-// AIzaSyDJeIW9O8zX3j7EPoIVfBepti8SjtP5TZM
-
 type IncidentListProps = {
   incidents: Incident[]
   selectedIncident: Incident | null
@@ -16,7 +12,7 @@ const IncidentList: FC<IncidentListProps> = ({ incidents, selectedIncident, onIn
   return (
     <>
       <h2 className="text-lg font-semibold text-center my-2">Incidents</h2>
-      <div className="overflow-y-auto px-2">
+      <div className="overflow-y-auto pb-32 px-2 sm:pb-2">
         {incidents.map((incident) => <IncidentListItem 
           incident={incident}
           isSelectedIncident={incident.id === selectedIncident?.id}
