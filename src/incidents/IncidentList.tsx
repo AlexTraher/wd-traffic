@@ -14,7 +14,7 @@ const IncidentList: FC<IncidentListProps> = ({ incidents, selectedIncident, onIn
     <>
       <div className="flex align-middle">
         <h2 className="text-lg font-semibold text-center self-center flex-1 basis-full my-2">Incidents</h2>
-        <button className="p-4" onClick={onClose}>X</button>
+        <button className="p-4 sm:hidden" onClick={onClose}>X</button>
       </div>
       <div className="overflow-y-auto pb-32 px-2 sm:pb-2">
         {incidents.map((incident) => <IncidentListItem 
