@@ -84,7 +84,9 @@ function App() {
         `${mobileListVisible ? 'flex -translate-y-full' : 'translate-y-0'} sm:translate-y-0 z-10 transition-transform ease-in-out duration-200 delay-100 h-[50%] sm:flex sm:h-full flex-col flex-grow-0 flex-shrink-0 basis-1/3 bg-slate-200`
         }
       >
-        <IncidentList 
+        
+        <IncidentList
+          onClose={() => setMobileListVisible(false)}
           incidents={visibleIncidents}
           selectedIncident={selectedIncident} 
           onIncidentClicked={(incident) => {

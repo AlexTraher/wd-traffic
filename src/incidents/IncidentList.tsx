@@ -5,13 +5,17 @@ import { FC } from "react"
 type IncidentListProps = {
   incidents: Incident[]
   selectedIncident: Incident | null
-  onIncidentClicked: (incident: Incident) => void 
+  onIncidentClicked: (incident: Incident) => void
+  onClose: () => void 
 }
 
-const IncidentList: FC<IncidentListProps> = ({ incidents, selectedIncident, onIncidentClicked }) => {
+const IncidentList: FC<IncidentListProps> = ({ incidents, selectedIncident, onIncidentClicked, onClose }) => {
   return (
     <>
-      <h2 className="text-lg font-semibold text-center my-2">Incidents</h2>
+      <div className="flex align-middle">
+        <h2 className="text-lg font-semibold text-center self-center flex-1 basis-full my-2">Incidents</h2>
+        <button className="p-4" onClick={onClose}>X</button>
+      </div>
       <div className="overflow-y-auto pb-32 px-2 sm:pb-2">
         {incidents.map((incident) => <IncidentListItem 
           incident={incident}
