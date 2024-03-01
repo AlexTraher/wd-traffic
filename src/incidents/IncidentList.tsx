@@ -3,6 +3,9 @@ import { Incident } from "@/types"
 import { FC } from "react"
 
 
+// Google maps API key
+// AIzaSyDJeIW9O8zX3j7EPoIVfBepti8SjtP5TZM
+
 type IncidentListProps = {
   incidents: Incident[]
   selectedIncident: Incident | null

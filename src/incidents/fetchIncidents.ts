@@ -1,20 +1,4 @@
 import { Incident, RawIncident } from "@/types";
-import { useQuery } from "@tanstack/react-query";
-
-
-
-// const useIncidents = () => {
-  
-
-//   // TODO - filter out incidents here by those that are visible
-
-
-//   return { isError, isLoading, incidents: data };
-// }
-
-// export default useIncidents;
-
-
 
 export const fetchIncidents =  (): Promise<Incident[]> => {
   return  fetch("./incidents.json")
@@ -27,8 +11,10 @@ export const fetchIncidents =  (): Promise<Incident[]> => {
     })
     .then((res) => res.json())
     .then(({ incidents: rawIncidents }) => {
-      return rawIncidents.map(processIncident);
-    });
+      return rawIncidents
+        .map(processIncident);
+        // TODO - exclude duplicates here?
+    })
 }
 
 const processIncident = (rawIncident: RawIncident): Incident => {
