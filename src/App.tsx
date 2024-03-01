@@ -71,6 +71,7 @@ function App() {
           >
             {incidents.map((incident) => 
               <IncidentMarker 
+                key={incident.id}
                 incident={incident}
                 isSelectedIncident={incident.id === selectedIncident?.id}
                 handleMarkerClick={setSelectedIncident}
@@ -80,7 +81,7 @@ function App() {
         </GoogleMap>
       </section>
       <section className={
-        `${mobileListVisible ? 'flex -translate-y-full' : 'translate-y-0'}  sm:translate-y-0 z-10 transition-transform ease-in-out duration-200 h-[50%] sm:flex sm:h-full flex-col flex-grow-0 flex-shrink-0 basis-1/3 bg-slate-200`
+        `${mobileListVisible ? 'flex -translate-y-full' : 'translate-y-0'} sm:translate-y-0 z-10 transition-transform ease-in-out duration-200 delay-100 h-[50%] sm:flex sm:h-full flex-col flex-grow-0 flex-shrink-0 basis-1/3 bg-slate-200`
         }
       >
         <IncidentList 
