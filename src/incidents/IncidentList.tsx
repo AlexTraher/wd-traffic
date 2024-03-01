@@ -5,25 +5,44 @@ import { FC } from "react"
 
 type IncidentListProps = {
   incidents: Incident[]
-  // onIncidentClick: () => TODO
+  selectedIncident: Incident | null
+  onIncidentClicked: (incident: Incident) => void 
 }
 
-const IncidentList: FC<IncidentListProps> = ({ incidents }) => {
+const IncidentList: FC<IncidentListProps> = ({ incidents, selectedIncident, onIncidentClicked }) => {
   return (
-    <div className="h-full overflow-y-auto">
-      {incidents.map((incident) => <IncidentListItem incident={incident} key={incident.id} />)}
-    </div>
+    <>
+      <h2 className="text-lg font-semibold text-center my-2">Incidents</h2>
+      <div className="overflow-y-auto px-2">
+        {incidents.map((incident) => <IncidentListItem 
+          incident={incident}
+          isSelectedIncident={incident.id === selectedIncident?.id}
+          key={incident.id}
+          onIncidentClicked={() => onIncidentClicked(incident)}
+        />)}
+      </div>
+    </>
   )
 }
 
 export default IncidentList;
 
-const IncidentListItem: FC<{ incident: Incident }> = ({ incident }) => {
+type IncidentListItemProps = { 
+  incident: Incident,
+  isSelectedIncident: boolean,
+  onIncidentClicked: () => void }
+
+const IncidentListItem: FC<IncidentListItemProps> = ({ incident, isSelectedIncident, onIncidentClicked }) => {
   return (
     <>
-      <div className="p-2">
-      <h3>{incident.title}</h3>
-      </div>
+      <button 
+        className={`${isSelectedIncident ? 'bg-slate-400' : 'hover:bg-slate-300'} flex flex-col p-2 text-left  w-full`}
+        onClick={onIncidentClicked}
+      >
+        <h2 className="font-semibold">{incident.title}</h2>
+        <h3>{incident.alert_type}</h3>
+        <p className="italic">{incident.description}</p>
+      </button>
       <Separator />
     </>
   )
