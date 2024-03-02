@@ -3,6 +3,9 @@ Coding test to display traffic incidents.
 
 Deployed demo available at: 
 
+[https://wave-digital-traffic-lct1orgfe-alextraher.vercel.app/](https://wave-digital-traffic-lct1orgfe-alextraher.vercel.app/)
+
+
 ## Getting Started
 1. run `npm install` to install all deps
 2. run `npm run dev` and visit `localhost:5173` to see the application.
