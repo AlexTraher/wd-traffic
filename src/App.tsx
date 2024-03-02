@@ -1,54 +1,29 @@
-import { fetchIncidents } from './incidents/fetchIncidents';
 import Spinner from './components/spinner/Spinner';
 import IncidentList from './incidents/IncidentList';
 import ErrorPage from './components/error/ErrorPage';
-import { useQuery } from '@tanstack/react-query';
-import { Incident } from './types';
 import { useState } from 'react';
 import { Button } from './components/ui/button';
-import { GoogleMap, MarkerClustererF, useJsApiLoader } from '@react-google-maps/api';
+import { GoogleMap, MarkerClustererF } from '@react-google-maps/api';
 import _debounce from 'lodash.debounce';
-import useVisibleIncidents from './incidents/useVisibleIncidents';
 import IncidentMarker from './map/IncidentMarker';
+import useLoadableMap from './map/useLoadableMap';
+import useMapFilterableIncidents from './incidents/useMapfilterableIncidents';
 
 function App() {
-  const { data: incidents, isPending, isError } = useQuery({
-    queryKey: ['incidents'],
-    queryFn: () => fetchIncidents(),
-  })
-
-
-  const [selectedIncident, setSelectedIncident] = useState<Incident | null>(null);
   const [mobileListVisible, setMobileListVisible] = useState(false);
-  const [map, setMap] = useState<google.maps.Map | null>(null)
 
-  const { visibleIncidents, onMapUpdate } = useVisibleIncidents(incidents, map);
+  const {
+    isPending,
+    isError,
+    data: incidents,
+    selectedIncident,
+    setSelectedIncident,
+    visibleIncidents,
+    onMapBoundsChanged,
+  } = useMapFilterableIncidents();
+  const { isMapApiLoaded, map, onMapLoad } = useLoadableMap(incidents);
 
-  const { isLoaded } = useJsApiLoader({
-    id: 'google-map-script',
-    googleMapsApiKey: "AIzaSyDJeIW9O8zX3j7EPoIVfBepti8SjtP5TZM" // TODO - hide this??
-  })
-
-  const onMapLoad = (map: google.maps.Map) => {
-    const bounds = new window.google.maps.LatLngBounds();
-
-    // this should be unreachable - but it's probably worth having error management here
-    if (!incidents) {
-      return;
-    }
-
-    for (const incident of incidents) {
-      bounds.extend({ lat: incident.lat, lng: incident.long });
-    }
-    map.fitBounds(bounds);
-
-    setMap(map)
-  }
-
-  
-
-
-  if (isPending || !isLoaded) {
+  if (isPending || !isMapApiLoaded) {
     return <Spinner />
   }
 
@@ -63,32 +38,32 @@ function App() {
         <GoogleMap 
           onLoad={onMapLoad}
           onBoundsChanged={_debounce(() => {
-            onMapUpdate();
+            onMapBoundsChanged(map);
           }, 100)}
           mapContainerStyle={{ height: '100%', width: '100%' }}
           options={{
             disableDefaultUI: true,
             zoomControl: true,
           }}
+        >
+          <MarkerClustererF
+            options={{ imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' }}
           >
-            <MarkerClustererF
-              options={{ imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' }}
-            >
-              {(clusterer) => (
-                <>
-                  {incidents.map((incident) => 
-                    <IncidentMarker 
-                      key={incident.id}
-                      incident={incident}
-                      isSelectedIncident={incident.id === selectedIncident?.id}
-                      handleMarkerClick={setSelectedIncident}
-                      handleInfoCloseClick={() => setSelectedIncident(null)}
-                      clusterer={clusterer}
-                      />
-                    )}
-                </>
-              )}
-                </MarkerClustererF>
+            {(clusterer) => (
+              <>
+                {incidents.map((incident) => 
+                  <IncidentMarker 
+                    key={incident.id}
+                    incident={incident}
+                    isSelectedIncident={incident.id === selectedIncident?.id}
+                    handleMarkerClick={setSelectedIncident}
+                    handleInfoCloseClick={() => setSelectedIncident(null)}
+                    clusterer={clusterer}
+                    />
+                  )}
+              </>
+            )}
+          </MarkerClustererF>
         </GoogleMap>
       </section>
       <section className={

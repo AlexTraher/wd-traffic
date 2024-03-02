@@ -1,10 +1,10 @@
 import { Incident } from "@/types";
 import { useState } from "react";
 
-const useVisibleIncidents = (incidents: Incident[] = [], map: google.maps.Map | null) => {
+const useVisibleIncidents = (incidents: Incident[] = []) => {
   const [visibleIncidents, setVisibleIncidents]  = useState<Incident[]>(incidents);
 
-  const onMapUpdate = () => {
+  const onMapBoundsChanged = ( map: google.maps.Map | null) => {
     if (!map) {
       return;
     }
@@ -17,9 +17,10 @@ const useVisibleIncidents = (incidents: Incident[] = [], map: google.maps.Map | 
   }
 
 
-  return { visibleIncidents, onMapUpdate };
+  return { visibleIncidents, onMapBoundsChanged };
 
 
 }
 
 export default useVisibleIncidents;
+
