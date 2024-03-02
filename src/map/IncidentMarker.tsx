@@ -8,13 +8,17 @@ type IncidentMarkerProps = {
   isSelectedIncident: boolean,
   handleMarkerClick: (incident: Incident) => void
   handleInfoCloseClick: () => void;
+  // Missing Type declaration from @react-google-maps/api library
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  clusterer: any,
 }
 
 const IncidentMarker: FC<IncidentMarkerProps> = ({ 
   incident,
   isSelectedIncident,
   handleMarkerClick,
-  handleInfoCloseClick
+  handleInfoCloseClick,
+  clusterer,
 }) => {
 
   const [marker, setMarker] = useState<google.maps.Marker>();
@@ -31,6 +35,7 @@ const IncidentMarker: FC<IncidentMarkerProps> = ({
         options={{
           optimized: false,
         }}
+        clusterer={clusterer}
       />
 
       {isSelectedIncident ?

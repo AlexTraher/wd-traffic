@@ -6,7 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Incident } from './types';
 import { useState } from 'react';
 import { Button } from './components/ui/button';
-import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
+import { GoogleMap, MarkerClustererF, useJsApiLoader } from '@react-google-maps/api';
 import _debounce from 'lodash.debounce';
 import useVisibleIncidents from './incidents/useVisibleIncidents';
 import IncidentMarker from './map/IncidentMarker';
@@ -45,6 +45,8 @@ function App() {
     setMap(map)
   }
 
+  
+
 
   if (isPending || !isLoaded) {
     return <Spinner />
@@ -56,7 +58,7 @@ function App() {
 
   return (
     <div className="flex flex-col sm:flex-row-reverse items-stretch h-full">
-      <section className="flex-grow-1 shrink-0 sm:shrink basis-full bg-red-500 w-full h-full">
+      <section className="flex-grow-1 shrink-0 sm:shrink basis-full w-full h-full">
         <Button className="sm:hidden absolute top-1 left-1 z-10" onClick={() => setMobileListVisible(!mobileListVisible)}>Incident List ({visibleIncidents.length})</Button>
         <GoogleMap 
           onLoad={onMapLoad}
@@ -69,15 +71,24 @@ function App() {
             zoomControl: true,
           }}
           >
-            {incidents.map((incident) => 
-              <IncidentMarker 
-                key={incident.id}
-                incident={incident}
-                isSelectedIncident={incident.id === selectedIncident?.id}
-                handleMarkerClick={setSelectedIncident}
-                handleInfoCloseClick={() => setSelectedIncident(null)}
-                />
-            )}
+            <MarkerClustererF
+              options={{ imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' }}
+            >
+              {(clusterer) => (
+                <>
+                  {incidents.map((incident) => 
+                    <IncidentMarker 
+                      key={incident.id}
+                      incident={incident}
+                      isSelectedIncident={incident.id === selectedIncident?.id}
+                      handleMarkerClick={setSelectedIncident}
+                      handleInfoCloseClick={() => setSelectedIncident(null)}
+                      clusterer={clusterer}
+                      />
+                    )}
+                </>
+              )}
+                </MarkerClustererF>
         </GoogleMap>
       </section>
       <section className={
