@@ -3,8 +3,10 @@
 ## Getting Started
 
 
+## Testing
+Tests are written in playwright. You can run them by running `npm run test`
+
 ## ALEX TODO
-- add playwright tests
 - look at clustering support
 - aggregate map setup into single hook and _maybe_ move map to own component
 - write readme

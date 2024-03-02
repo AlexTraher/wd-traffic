@@ -27,6 +27,10 @@ const IncidentMarker: FC<IncidentMarkerProps> = ({
         title={incident.title}
         onClick={() => handleMarkerClick(incident)}
         onLoad={setMarker}
+        data-testid={`incident-marker-${incident.id}`}
+        options={{
+          optimized: false,
+        }}
       />
 
       {isSelectedIncident ?

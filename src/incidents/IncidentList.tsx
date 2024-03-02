@@ -12,7 +12,7 @@ type IncidentListProps = {
 const IncidentList: FC<IncidentListProps> = ({ incidents, selectedIncident, onIncidentClicked, onClose }) => {
   return (
     <>
-      <div className="flex align-middle">
+      <div className="flex align-middle" data-testid="incident-list">
         <h2 className="text-lg font-semibold text-center self-center flex-1 basis-full my-2">Incidents</h2>
         <button className="p-4 sm:hidden" onClick={onClose}>X</button>
       </div>
@@ -41,6 +41,7 @@ const IncidentListItem: FC<IncidentListItemProps> = ({ incident, isSelectedIncid
       <button 
         className={`${isSelectedIncident ? 'bg-slate-400' : 'hover:bg-slate-300'} flex flex-col p-2 text-left  w-full`}
         onClick={onIncidentClicked}
+        data-testid={`incident-list-item-button-${incident.id}`}
       >
         <h2 className="font-semibold">{incident.title}</h2>
         <h3>{incident.alert_type}</h3>
